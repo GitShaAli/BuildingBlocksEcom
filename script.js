@@ -66,3 +66,30 @@ parentContainer.addEventListener('click',(e)=>{
 
 })
 }
+
+
+const parentNode = document.getElementById('section-container');
+if(parentNode)console.log('yes');
+else{console.log("no")}
+// console.log(parents)
+window.addEventListener('DOMContentLoaded',()=>{
+    const parentNode = document.getElementById('section-container');
+    axios.get('http://localhost:3000/products').then((products) => {
+        console.log(products.data[0])
+        for(let i=0;i<products.data.length;i++){
+            let productHtml = `
+            
+                 <div id="album-${products.data[i].id}" class="content">
+                     <h4>${products.data[i].title}</h4>
+                     <div class="section-image-container">
+                        <img class="pImage" src=${products.data[i].imageUrl} alt="">
+                     </div>
+                                     <div class="prod-details">
+                         <span>${products.data[i].price}</span>
+                         <button class="shop-button" type='button'>ADD TO CART</button>
+                    </div>
+                </div>`
+                parentNode.innerHTML += productHtml
+        }
+    })
+})
