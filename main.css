@@ -31,7 +31,19 @@ header ul li{
     margin-right:40px;
     margin-left: 40px;
 }
-header li a{
+header button{
+    padding: 10px;
+    border-style: ridge;
+    border-color: rgb(141, 157, 84);
+    background-color: rgb(93, 26, 106);
+    color: white;
+    font-size: x-large;
+    margin: 10px 10px;
+}
+header .roundBtn{
+    border-radius: 100%;
+}
+.navCart{
     border-radius: 5px;
     padding: 3px;
     position: fixed;
@@ -44,7 +56,11 @@ header li a{
     background-color: rgb(149, 84, 157);
     border-color: rgb(255, 255, 255);
 }
-li a span{
+li a:visited, a:link{
+    text-decoration: none;
+    color: white;
+}
+.navCart span{
     position: fixed;
     padding: 2px;
     font-size: large;
@@ -75,6 +91,25 @@ section h2{
     padding:20px 40px;
 }
 
+table {
+    font-family: arial, sans-serif;
+    width: 100%;
+    background-color: rgb(149, 84, 157);
+  }
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 20px;
+}
+  
+tr:nth-child(even) {
+    background-color: rgb(93, 26, 106);
+}
+tr button{
+    padding: 5px;
+    background-color: rgb(186, 143, 225);
+}
 
 #section-container{
     display:flex;
@@ -108,6 +143,12 @@ section h2{
     transition: ease-in 0.5s;
     filter: brightness(100%);
 }
+
+.pImage:hover{
+    transform: scale(1.5);
+    filter: brightness(130%);
+}
+
 
 #section-container div h4{
     display: block;
@@ -182,4 +223,74 @@ footer .ficon{
 }
 .ficon img{
     width:40px;
+}
+#cart{
+    margin:0px;
+    position:fixed;
+    top:50px;
+    height: 100%;
+    right:0;
+    background-color:rgb(225, 192, 232);
+    border:1px solid rgb(0, 0, 0);
+    min-height:50vh;
+}
+#cart h2{
+    margin:20px 0px;
+    padding:0;
+}
+
+
+.hide{
+    position:absolute;
+    cursor:pointer;
+    color:rgb(121, 117, 117);
+    padding:5px;
+    top:0;
+    width: 200px;
+    margin:10px;
+    background:none;
+    font-size:16px;
+    font-weight: 700;
+    border-style: dotted;
+    border-radius:10px;
+}
+
+.cart-items{
+    width:45%;
+}
+.cart-img{
+    width:50px;
+    border-radius:50%;
+    margin-right:20px;
+    margin-top:10px;
+}
+.cart-price{
+    width:20%;
+}
+.cart-items span{
+    background-color: rgb(147, 141, 141);
+}
+
+
+.toast{
+    padding: 1rem;
+    background-color: rgb(158, 133, 183);
+    color: white;
+    border-radius: 5px;
+    border: dashed rgb(13, 2, 2);
+    margin:1rem;
+}
+#notification-container{
+    position: fixed;
+    bottom: 5px;
+    right: 10px;
+}
+.btnPurchase{
+    display:flex;
+    padding:15px;
+    background-color: #777;
+    border:none;
+    border-radius:7px;
+    margin:auto;
+    cursor:pointer;
 }
