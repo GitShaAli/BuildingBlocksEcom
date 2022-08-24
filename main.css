@@ -43,6 +43,7 @@ header button{
 header .roundBtn{
     border-radius: 100%;
 }
+
 .navCart{
     border-radius: 5px;
     padding: 3px;
@@ -256,20 +257,30 @@ footer .ficon{
 }
 
 .cart-items{
-    width:45%;
+    height: 1000%;
+    border-style: ridge;
+    padding: 35px;
+    top:0;
+    position: relative;
+    background-color: black;
+    justify-content: end;
+    color: white;
+    width: max-content;
+    margin-top:10%;
+    width: 80%;
 }
 .cart-img{
-    width:50px;
-    border-radius:50%;
-    margin-right:20px;
-    margin-top:10px;
+    width:100px;
+    height: 100px;
+    border-radius:10%;
+    margin-top: 5%;
 }
-.cart-price{
+/* .cart-price{
     width:20%;
-}
-.cart-items span{
+} */
+/* .cart-items span{
     background-color: rgb(147, 141, 141);
-}
+} */
 
 
 .toast{
@@ -285,12 +296,37 @@ footer .ficon{
     bottom: 5px;
     right: 10px;
 }
+
 .btnPurchase{
+    position: relative;
     display:flex;
-    padding:15px;
-    background-color: #777;
+    justify-content: center;
+    padding:10px;
+    background-color: rgb(168, 69, 196);
     border:none;
     border-radius:7px;
-    margin:auto;
+    /* margin-top: 3%; */
+    right: -5%;
+    /* margin:auto; */
+    margin-right: 10%;
     cursor:pointer;
+    width:200px;
+}
+.total{
+    display:flex;
+    justify-content: center;
+    border-radius:7px;
+    margin-top: 10%;
+}
+.total span{
+    margin-top: 5%;
+    width:200px;
+    /* margin-right: 10%; */
+}
+
+.cart-items button{
+    padding: 10px;
+}
+.cart-items input{
+    width:10%;
 }
