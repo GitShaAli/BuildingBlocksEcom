@@ -182,7 +182,11 @@ tr button{
     background-color: rgb(93, 26, 106);
     color: white;
 }
-
+.cart-q{
+    width: 5%;
+    color: bisque;
+    background-color: #333;
+}
 .see-cart{
     background:rgb(93, 26, 106);
     color: #ffffff;

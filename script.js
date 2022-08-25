@@ -28,14 +28,15 @@ parentContainer.addEventListener('click',(e)=>{
     
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
             axios.get('http://localhost:3000/cart').then(products => {
+                console.log(products.data)
                 for(let i=0;i<products.data.length;i++){
                     
                     const id = products.data[i].id;
                     const name=products.data[i].title;
                     const imageUrl=products.data[i].imageUrl;
                     const price=products.data[i].price;
-
-                    showCart(id,name,imageUrl,price);
+                    const quantity=products.data[i].cartItem.quantity
+                    showCart(id,name,imageUrl,price,quantity);
                     
 
                 }
@@ -81,20 +82,23 @@ window.addEventListener('DOMContentLoaded',()=>{
 
     axios.get('http://localhost:3000/cart').then(products => {
         const cartCount = products.data.length;
-        document.querySelector('.count').innerText=cartCount;
+        let tot=0;
+        for(let i=0;i<products.data.length;i++){
+            let quant = parseInt(products.data[i].cartItem.quantity);
+            tot+=quant;
+        }
+        document.querySelector('.count').innerText=tot;
     })
 
 
 })
 
 
-function showCart(id,name,imageUrl,price){
+function showCart(id,name,imageUrl,price,quantity){
     const check = document.getElementById(`item-${id}`);
     
     if(!check){
-        let total = parseFloat(document.getElementById('total').innerText);
-                    total+=parseFloat(price);
-                    document.getElementById('total').innerText=total;
+        
 
         const add_item = document.createElement('div');
                     add_item.classList.add('item');
@@ -105,11 +109,16 @@ function showCart(id,name,imageUrl,price){
                                         
             <img class='cart-img' src="${imageUrl}" alt="images">
             <span style="color:red;">${name}</span>
-                                        
+            Quantity: <span class='cart-q'>${quantity}</span>                
             Price: <span class='cart-price'>${price}</span>
             <button>Remove</button>
             </span>`
         cart_body.appendChild(add_item);
+
+        let totQuantityPrice = parseFloat(price) * parseFloat(quantity);
+        let total = parseFloat(document.getElementById('total').innerText);
+                    total+=totQuantityPrice;
+                    document.getElementById('total').innerText=total;
     }
 }
 
