@@ -27,7 +27,8 @@ parentContainer.addEventListener('click',(e)=>{
 
     
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
-            axios.get('http://localhost:3000/cart').then(products => {
+        const pageNumber = 1;
+            axios.get(`http://localhost:3000/cart/?page=1`).then(products => {
                 console.log(products.data)
                 for(let i=0;i<products.data.length;i++){
                     
@@ -43,6 +44,54 @@ parentContainer.addEventListener('click',(e)=>{
             })
             cart.style = "display:block;";    
     }
+
+
+    if(e.target.className=='see-cart' || e.target.className=='navCart'){
+        const pageNumber = 1;
+            axios.get(`http://localhost:3000/cart/?page=1`).then(products => {
+                console.log(products.data)
+                for(let i=0;i<products.data.length;i++){
+                    
+                    const id = products.data[i].id;
+                    const name=products.data[i].title;
+                    const imageUrl=products.data[i].imageUrl;
+                    const price=products.data[i].price;
+                    const quantity=products.data[i].cartItem.quantity
+                    showCart(id,name,imageUrl,price,quantity);
+                    
+
+                }
+            })
+            cart.style = "display:block;";    
+    }
+
+
+    if(e.target.className=='cButton'){
+        const remElementCart = document.getElementById('showAllC');
+        remElementCart.remove(); 
+        const pageNumber = e.target.innerHTML;
+            axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(products => {
+
+                const cart_body = document.getElementById('cart-body');
+                let remElementsCo = document.createElement("div");
+                remElementsCo.setAttribute("id", "showAllC");
+                cart_body.appendChild(remElementsCo)
+                for(let i=0;i<products.data.length;i++){
+                    
+                    const id = products.data[i].id;
+                    const name=products.data[i].title;
+                    const imageUrl=products.data[i].imageUrl;
+                    const price=products.data[i].price;
+                    const quantity=products.data[i].cartItem.quantity
+                    showCart(id,name,imageUrl,price,quantity);
+                    
+
+                }
+
+            })
+            cart.style = "display:block;";    
+    }
+
     if(e.target.className=='hide'){
         cart.style = "display:none;";
     }
@@ -54,33 +103,40 @@ parentContainer.addEventListener('click',(e)=>{
         e.target.parentNode.parentNode.remove()
     }
 
+    if(e.target.className=='pButton'){
+        const remElement = document.getElementById('showAll');
+        remElement.remove();     
+        const pageNumber = e.target.innerHTML;
+        axios.get(`http://localhost:3000/?page=${pageNumber}`).then((res) => {
+            showProducts(res.data.products);
+            console.log(res.data.totalItem);
+        })
+        
+    }
+
 })
 }
 
 
-const parentNode = document.getElementById('section-container');
+
+
+
 window.addEventListener('DOMContentLoaded',()=>{
-    const parentNode = document.getElementById('section-container');
-    axios.get('http://localhost:3000/products').then((products) => {
-        console.log(products.data[0])
-        for(let i=0;i<products.data.length;i++){
-            let productHtml = `
-            
-                 <div id="album-${products.data[i].id}" class="content">
-                     <h4>${products.data[i].title}</h4>
-                     <div class="section-image-container">
-                        <img class="pImage" src=${products.data[i].imageUrl} alt="">
-                     </div>
-                                     <div class="prod-details">
-                         <span>${products.data[i].price}</span>
-                         <button class="addCart-button" type='button'>ADD TO CART</button>
-                    </div>
-                </div>`
-                parentNode.innerHTML += productHtml
-        }
+    const pageNumber = 1;
+
+        axios.get(`http://localhost:3000/?page=${pageNumber}`).then((res) => {
+            showProducts(res.data.products);
+            const totalPage=res.data.totalIem;
+            const currentPage=res.data.page;
+            const hasNext=res.data.hasNext;
+            const hasPrev=res.data.hasPrev;
+            const nextPage=res.data.nextPage;
+            const prevPage=res.data.prevPage;
+            const lastPage=res.data.lastPage;
     })
 
-    axios.get('http://localhost:3000/cart').then(products => {
+    
+    axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(products => {
         const cartCount = products.data.length;
         let tot=0;
         for(let i=0;i<products.data.length;i++){
@@ -92,19 +148,50 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 
 })
+ 
+
+
+
+function showProducts(products){
+    const parentNode = document.getElementById('section-container');
+    
+            let remElements = document.createElement("div");
+            remElements.setAttribute("id", "showAll");
+            parentNode.appendChild(remElements)
+
+
+    for(let i=0;i<products.length;i++){
+        console.log("data IN :"+products[i].title)
+        let productHtml = `
+        
+             <div id="album-${products[i].id}" class="content">
+                 <h4>${products[i].title}</h4>
+                 <div class="section-image-container">
+                    <img class="pImage" src=${products[i].imageUrl} alt="">
+                 </div>
+                                 <div class="prod-details">
+                     <span>${products[i].price}</span>
+                     <button class="addCart-button" type='button'>ADD TO CART</button>
+                </div>
+            </div>`
+            remElements.innerHTML += productHtml
+    }
+
+}
+
 
 
 function showCart(id,name,imageUrl,price,quantity){
     const check = document.getElementById(`item-${id}`);
-    
-    if(!check){
+    let remElementsC = document.getElementById('showAllC');
+     if(!check){
         
 
         const add_item = document.createElement('div');
                     add_item.classList.add('item');
                     add_item.setAttribute('id',`item-${id}`);
             
-        const cart_body = document.getElementById('cart-body');
+        
         add_item.innerHTML = `<span class='cart-items'>
                                         
             <img class='cart-img' src="${imageUrl}" alt="images">
@@ -113,12 +200,12 @@ function showCart(id,name,imageUrl,price,quantity){
             Price: <span class='cart-price'>${price}</span>
             <button>Remove</button>
             </span>`
-        cart_body.appendChild(add_item);
+        remElementsC.appendChild(add_item);
 
-        let totQuantityPrice = parseFloat(price) * parseFloat(quantity);
-        let total = parseFloat(document.getElementById('total').innerText);
-                    total+=totQuantityPrice;
-                    document.getElementById('total').innerText=total;
+        // let totQuantityPrice = parseFloat(price) * parseFloat(quantity);
+        // let total = parseFloat(document.getElementById('total').innerText);
+        //             total+=totQuantityPrice;
+        //             document.getElementById('total').innerText=total;
     }
 }
 

@@ -112,25 +112,35 @@ tr button{
     background-color: rgb(186, 143, 225);
 }
 
-#section-container{
+
+#showAll{
     display:flex;
     flex-wrap: wrap;
     justify-content:space-around;
 }
-#section-container div{
-    margin:30px;
+
+#showAll #section-container{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:space-around;
+}
+#showAll #section-container div{
+    margin:20px;
     background-color: white;
 }
 
 #section-container .content{
+    background-color: white;
     border-style: ridge;
-    border-color: rgb(93, 26, 106);
-    box-shadow: 5px 5px 5px 10px rgba(0, 0, 0, 0.2);
+    border-color: rgb(132, 130, 130);
+    box-shadow: 5px 5px 5px 10px rgba(47, 46, 46, 0.2);
+    justify-content: center;
+    width: 30%;
 }
 
 .section-image-container{
     height: 250px;
-    width: 250px;
+    width: 383px;
     overflow: hidden;
 }
 
@@ -139,7 +149,7 @@ tr button{
     object-fit: cover;
     height: 100%;
     width: 100%;
-    padding:0px;
+    padding:3px;
     margin:0px;
     transition: ease-in 0.5s;
     filter: brightness(100%);
@@ -333,4 +343,14 @@ footer .ficon{
 }
 .cart-items input{
     width:10%;
+}
+.pagination{
+    justify-content: center;
+    text-align: center;
+}
+.pagination .pButton{
+    border: none;
+    padding: 4px;
+    color:black;
+    background-color:rgb(219, 197, 242); ;
 }
