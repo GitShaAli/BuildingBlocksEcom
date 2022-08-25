@@ -168,7 +168,7 @@ tr button{
 #section-container .prod-details span{
     padding: 10px;
 }
-#section-container .shop-button{
+#section-container .addCart-button{
     cursor:pointer;
     padding:8px;
     color:black;
@@ -178,7 +178,7 @@ tr button{
     border-radius: 4%;
     background-color: rgba(162, 109, 198, 0.4);
 }
-#section-container .shop-button:hover{
+#section-container .addCart-button:hover{
     background-color: rgb(93, 26, 106);
     color: white;
 }
