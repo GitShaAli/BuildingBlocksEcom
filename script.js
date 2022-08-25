@@ -3,8 +3,9 @@ const cart = document.getElementById('cart');
 
 const parentContainer = document.getElementById('ecom');
 
+
 parentContainer.addEventListener('click',(e)=>{
-    
+
     if (e.target.className=='addCart-button'){
         const productId = Number(e.target.parentNode.parentNode.id.split('-')[1]);
         console.log(productId)
@@ -12,7 +13,9 @@ parentContainer.addEventListener('click',(e)=>{
         .then(response => {
             if(response.status==200){
                 notification(response.data.message);
-                // console.log("Quant :"+response.data.quantity);
+                const tip = parseInt(document.querySelector('.count').innerText);
+                document.querySelector('.count').innerText = tip+1;
+                
             }
             else    throw new Error('Unable to add product');
         })
@@ -20,14 +23,23 @@ parentContainer.addEventListener('click',(e)=>{
            notification(err, true);
         });
 
-        let count = parseInt(document.querySelector('.count').innerText);
-        count+=1;
-        document.querySelector('.count').innerText=count;
-
     }
 
     
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
+            axios.get('http://localhost:3000/cart').then(products => {
+                for(let i=0;i<products.data.length;i++){
+                    
+                    const id = products.data[i].id;
+                    const name=products.data[i].title;
+                    const imageUrl=products.data[i].imageUrl;
+                    const price=products.data[i].price;
+
+                    showCart(id,name,imageUrl,price);
+                    
+
+                }
+            })
             cart.style = "display:block;";    
     }
     if(e.target.className=='hide'){
@@ -39,22 +51,6 @@ parentContainer.addEventListener('click',(e)=>{
         document.querySelector('.count').innerText = parseInt(document.querySelector('.count').innerText)-1
         document.querySelector('#total').innerText = `${cartPrice.toFixed(2)}`
         e.target.parentNode.parentNode.remove()
-    }
-    if(e.target.className=='see-cart' || e.target.className=='navCart'){
-        axios.get('http://localhost:3000/cart').then(products => {
-        for(let i=0;i<products.data.length;i++){
-            const id = products.data[i].id;
-            const name=products.data[i].name;
-            const imageUrl=products.data[i].imageUrl;
-            const price=products.data[i].price;
-            let total = parseFloat(document.getElementById('total').innerText);
-            total+=parseFloat(price);
-            document.getElementById('total').innerText=total;
-            
-            showCart(id,name,imageUrl,price);
-            
-        }
-    })
     }
 
 })
@@ -93,22 +89,28 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 
 function showCart(id,name,imageUrl,price){
-    const add_item = document.createElement('div');
-            add_item.classList.add('item');
-            add_item.setAttribute('id',`item-${id}`);
+    const check = document.getElementById(`item-${id}`);
     
-            const cart_body = document.getElementById('cart-body');
-            add_item.innerHTML = `<span class='cart-items'>
-                                   
-                                   <img class='cart-img' src="${imageUrl}" alt="images">
-                                   <span style="color:red;">${name}</span>
-                                   
-                                   Price: <span class='cart-price'>${price}</span>
-                                   
-                                  
-                                  <button>Remove</button>
-                                  </span>`
-            cart_body.appendChild(add_item);
+    if(!check){
+        let total = parseFloat(document.getElementById('total').innerText);
+                    total+=parseFloat(price);
+                    document.getElementById('total').innerText=total;
+
+        const add_item = document.createElement('div');
+                    add_item.classList.add('item');
+                    add_item.setAttribute('id',`item-${id}`);
+            
+        const cart_body = document.getElementById('cart-body');
+        add_item.innerHTML = `<span class='cart-items'>
+                                        
+            <img class='cart-img' src="${imageUrl}" alt="images">
+            <span style="color:red;">${name}</span>
+                                        
+            Price: <span class='cart-price'>${price}</span>
+            <button>Remove</button>
+            </span>`
+        cart_body.appendChild(add_item);
+    }
 }
 
 function notification(res){
