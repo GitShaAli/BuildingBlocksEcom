@@ -4,53 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Orders Page</title>
     <link rel="stylesheet" href="E:\BackEnd\EcommerceWebsite\main.css">
+    <script src="E:\BackEnd\EcommerceWebsite\order.js"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li style="color:rgb(93, 26, 106);">Home</li>
+                <li><a href="E:\BackEnd\EcommerceWebsite\home.html">Home</a></li>
                 <li><a href="E:\BackEnd\EcommerceWebsite\index.html">Store</a></li>
-                <li><a href="E:\BackEnd\EcommerceWebsite\order.html">Past Orders</button></li>
+                <li class="active pastOrders" style="color:rgb(93, 26, 106);">Past Orders</li>
                 <li><a href="E:\BackEnd\EcommerceWebsite\about.html">About</a></li>
             </ul>
         </nav>
         <h1>The Generics</h1>
-        <button>Get Our Latest Album</button>
-        <br>
-        <button class="roundBtn">►</button>
     </header>
+    
 
     <section class="container">
-        <h2>Tours</h2>
+        <h2>All Orders</h2>
         <div id="section-container">
             <div id="prod1" class="contents">
             <div style="justify-content:center;text-align:center;font-size:20px;margin:25px;">
-                <table>
-                    <tr>
-                        <th>Date</th><th>Place</th><th>Venue</th><th>▼</th>
-                    </tr>
-                    <tr>
-                        <td>JUL16</td>
-                        <td>DETROIT, MI</td>
-                        <td>DTE ENERGY MUSIC THEATRE</td>
-                        <td><Button>Get Tickets</Button></td>
-                    </tr>
-                    <tr>
-                        <td>JUL21</td>
-                        <td>DETROIT, MI</td>
-                        <td>DTE ENERGY MUSIC THEATRE</td>
-                        <td><Button>Get Tickets</Button></td>
-                    </tr>
-                    <tr>
-                        <td>AUG1</td>
-                        <td>DETROIT, MI</td>
-                        <td>DTE ENERGY MUSIC THEATRE</td>
-                        <td><Button>Get Tickets</Button></td>
-                    </tr>
-                </table>
+                <div class="allOrders" id="allOrders">
+                    
+                </div>
             </div>
         </div>
         </div>

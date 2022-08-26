@@ -392,3 +392,50 @@ footer .ficon{
     background-color: black;
     color:white;
 }
+/* .OImage{
+    width:50px;
+    height:50px; 
+} */
+
+.allOrders .tile{
+    /* height:700px; */
+    background-color: rgb(42, 4, 54);
+    color: white;
+    width:100%;
+    justify-content: center;
+    margin: 20px;
+    border-radius: 10px;
+    padding: 30px;
+}
+.allOrders .tile h3{
+    width: 100%;
+    justify-content: center;
+    text-align: left;
+    background-color: rgb(75, 1, 1);
+    color: white;
+}
+.allOrders .tile p{
+    text-align: left;
+}
+
+.allOrders .tile img{
+    height: 100px;
+    margin-top: -40px;
+    margin-right: -150px;
+    width: 100px;
+    border-radius: 30%;
+}
+
+.allOrders{
+    display:flex;
+    margin-left: 5px;
+    justify-content: center;
+    text-align: center;
+} 
+
+
+.allOrders div{
+    /* width:1000px; */
+    /* margin-right: 50px; */
+    border-style: ridge;
+}

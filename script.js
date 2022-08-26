@@ -119,6 +119,18 @@ parentContainer.addEventListener('click',(e)=>{
         e.target.parentNode.parentNode.remove()
     }
 
+    // if(e.target.className=='pastOrders'){
+    //     axios.get(`http://localhost:3000/orders`).then(res => {
+
+    //             const cart_body = document.getElementById('cart-body');
+    //             console.log(res)
+    //             console.log(res.data[0].id)
+    //             console.log(res.data[0].products)
+    //                 // showCart(res.data.products);
+
+    //     })
+    // }
+
     if(e.target.className=='pButton'){
         const elements = Array.from(document.getElementsByClassName('active'));
 
