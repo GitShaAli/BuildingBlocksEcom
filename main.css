@@ -93,13 +93,19 @@ section h2{
 }
 
 table {
+    border: none;
     font-family: arial, sans-serif;
     width: 100%;
     background-color: rgb(149, 84, 157);
+    font-family: 'jokerman';
+    color: rgb(230, 199, 251);
   }
-  
+th{
+    color:white;
+    font-family: 'jokerman';
+}
 td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid #666464;
     text-align: center;
     padding: 20px;
 }
@@ -143,7 +149,29 @@ tr button{
     width: 383px;
     overflow: hidden;
 }
-
+.Cpagination{
+    position: absolute;
+    padding: 2px;
+    font-size: large;
+    /* background-color:rgb(255, 255, 255); */
+    border-radius: 5px;
+    margin-top: 380px;
+    color: rgb(149, 84, 157);
+}
+.cButton{
+    border: none;
+    padding: 4px;
+    color:rgb(255, 255, 255);
+    background-color:rgb(93, 26, 106);
+    margin-right: 8px;
+}
+.contents{
+    margin-left: 10%;
+    width:1000px;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+}
 .pImage{
     transform-origin: center center;
     object-fit: cover;
@@ -168,6 +196,7 @@ tr button{
     font-size: 24px;
     color: #333;
     margin-bottom: 15px;
+    justify-content: center;
 }
 #section-container .prod-details{
     display: flex;
@@ -271,17 +300,17 @@ footer .ficon{
 }
 
 .cart-items{
-    height: 1000%;
+    height: 450%;
     border-style: ridge;
-    padding: 35px;
+    padding: 10px;
     top:0;
     position: relative;
     background-color: black;
     justify-content: end;
     color: white;
     width: max-content;
-    margin-top:10%;
-    width: 80%;
+    margin-top:5%;
+    width: 45%;
 }
 .cart-img{
     width:100px;
@@ -351,6 +380,15 @@ footer .ficon{
 .pagination .pButton{
     border: none;
     padding: 4px;
+    margin-right: 10px;
     color:black;
     background-color:rgb(219, 197, 242); ;
+}
+.pagination .active{
+    background-color: black;
+    color: white;
+}
+.cActive{
+    background-color: black;
+    color:white;
 }

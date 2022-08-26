@@ -25,6 +25,24 @@ parentContainer.addEventListener('click',(e)=>{
 
     }
 
+    // ---
+    if (e.target.className=='btnPurchase'){
+        const productId = Number(e.target.parentNode.parentNode.id.split('-')[1]);
+        console.log(productId)
+        axios.post('http://localhost:3000/checkOut')
+        .then(response => {
+            if(response.status==200){
+                notification(`Order sucessfully placed with order id = ${response.data[0].orderId}`);
+            }
+            else    throw new Error('Unable to order product');
+        })
+        .catch(err => {
+           notification(err, true);
+        });
+
+    }
+    // btnPurchase
+
     
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
         const pageNumber = 1;
@@ -47,49 +65,47 @@ parentContainer.addEventListener('click',(e)=>{
 
 
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
-        const pageNumber = 1;
-            axios.get(`http://localhost:3000/cart/?page=1`).then(products => {
-                console.log(products.data)
-                for(let i=0;i<products.data.length;i++){
-                    
-                    const id = products.data[i].id;
-                    const name=products.data[i].title;
-                    const imageUrl=products.data[i].imageUrl;
-                    const price=products.data[i].price;
-                    const quantity=products.data[i].cartItem.quantity
-                    showCart(id,name,imageUrl,price,quantity);
-                    
 
-                }
+        
+        const pageNumber = 1;
+            axios.get(`http://localhost:3000/cart/?page=1`).then(res => {
+                const cart_body = document.getElementById('cart-body');
+                console.log(res)
+                showCart(res.data.products);
+
+                const lastPageC=res.data.lastPC;
+                console.log('lastpage : '+lastPageC)
+                let pageParentCart = document.getElementById('Cpagination');
+                for(let i=2;i<=lastPageC;i++){
+                const pages = document.createElement("button");
+                pages.classList.add('cButton');
+                pages.innerText = i;
+                pageParentCart.appendChild(pages);
+            }
             })
+            
             cart.style = "display:block;";    
     }
 
 
-    if(e.target.className=='cButton'){
-        const remElementCart = document.getElementById('showAllC');
-        remElementCart.remove(); 
-        const pageNumber = e.target.innerHTML;
-            axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(products => {
+    if(e.target.className=='cButton'){ 
+            const elementsinC = Array.from(document.getElementsByClassName('cActive'));
+
+            elementsinC.forEach(element => {
+                element.classList.remove('cActive');
+            });
+            const pageNumber = e.target.innerHTML;
+            const remElementForCart = document.getElementById('showAllC');
+            remElementForCart.remove();     
+            axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(res => {
 
                 const cart_body = document.getElementById('cart-body');
-                let remElementsCo = document.createElement("div");
-                remElementsCo.setAttribute("id", "showAllC");
-                cart_body.appendChild(remElementsCo)
-                for(let i=0;i<products.data.length;i++){
-                    
-                    const id = products.data[i].id;
-                    const name=products.data[i].title;
-                    const imageUrl=products.data[i].imageUrl;
-                    const price=products.data[i].price;
-                    const quantity=products.data[i].cartItem.quantity
-                    showCart(id,name,imageUrl,price,quantity);
-                    
 
-                }
+                    showCart(res.data.products);
 
             })
-            cart.style = "display:block;";    
+            e.target.classList.add('cActive');
+
     }
 
     if(e.target.className=='hide'){
@@ -104,6 +120,12 @@ parentContainer.addEventListener('click',(e)=>{
     }
 
     if(e.target.className=='pButton'){
+        const elements = Array.from(document.getElementsByClassName('active'));
+
+            elements.forEach(element => {
+            element.classList.remove('active');
+        });
+
         const remElement = document.getElementById('showAll');
         remElement.remove();     
         const pageNumber = e.target.innerHTML;
@@ -111,6 +133,8 @@ parentContainer.addEventListener('click',(e)=>{
             showProducts(res.data.products);
             console.log(res.data.totalItem);
         })
+        
+        e.target.classList.add('active');
         
     }
 
@@ -126,24 +150,23 @@ window.addEventListener('DOMContentLoaded',()=>{
 
         axios.get(`http://localhost:3000/?page=${pageNumber}`).then((res) => {
             showProducts(res.data.products);
-            const totalPage=res.data.totalIem;
-            const currentPage=res.data.page;
-            const hasNext=res.data.hasNext;
-            const hasPrev=res.data.hasPrev;
-            const nextPage=res.data.nextPage;
-            const prevPage=res.data.prevPage;
             const lastPage=res.data.lastPage;
+            let pageParent = document.getElementById('pagination');
+            for(let i=2;i<=lastPage;i++){
+                const pP = document.createElement("button");
+                pP.classList.add('pButton');
+                pP.innerText = i;
+                pageParent.appendChild(pP);
+            }
     })
-
-    
-    axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(products => {
-        const cartCount = products.data.length;
-        let tot=0;
-        for(let i=0;i<products.data.length;i++){
-            let quant = parseInt(products.data[i].cartItem.quantity);
-            tot+=quant;
-        }
-        document.querySelector('.count').innerText=tot;
+    axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(res => {
+        // let totalPrice = 0;
+        // for(let i=0;i<res.data.products.length;i++){
+        //     totalPrice+=res.data.products[i].price;
+        // }
+        // document.querySelector('.dummyBtn').firstElementChild.innerText=totalPrice;
+        let cartCount = res.data.totCartItems;
+        document.querySelector('.count').innerText=cartCount;
     })
 
 
@@ -181,32 +204,26 @@ function showProducts(products){
 
 
 
-function showCart(id,name,imageUrl,price,quantity){
-    const check = document.getElementById(`item-${id}`);
-    let remElementsC = document.getElementById('showAllC');
-     if(!check){
-        
+function showCart(products){
+    const parentNode = document.getElementById('cart-body');
 
-        const add_item = document.createElement('div');
-                    add_item.classList.add('item');
-                    add_item.setAttribute('id',`item-${id}`);
-            
-        
-        add_item.innerHTML = `<span class='cart-items'>
+            let remElementC = document.createElement("div");
+            remElementC.setAttribute("id", "showAllC");
+            parentNode.appendChild(remElementC)
+    for(let i=0;i<products.length;i++){
+            add_item = `<span class='cart-items'>
                                         
-            <img class='cart-img' src="${imageUrl}" alt="images">
-            <span style="color:red;">${name}</span>
-            Quantity: <span class='cart-q'>${quantity}</span>                
-            Price: <span class='cart-price'>${price}</span>
+            <img class='cart-img' src="${products[i].imageUrl}" alt="images">
+            <span style="color:red;">${products[i].title}</span>
+            Quantity: <span class='cart-q'>${products[i].cartItem.quantity}</span>                
+            Price: <span class='cart-price'>${products[i].price}</span>
             <button>Remove</button>
             </span>`
-        remElementsC.appendChild(add_item);
-
-        // let totQuantityPrice = parseFloat(price) * parseFloat(quantity);
-        // let total = parseFloat(document.getElementById('total').innerText);
-        //             total+=totQuantityPrice;
-        //             document.getElementById('total').innerText=total;
+            remElementC.innerHTML+=add_item;
     }
+        
+
+
 }
 
 function notification(res){
