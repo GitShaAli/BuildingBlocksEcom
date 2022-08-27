@@ -4,7 +4,7 @@
     padding: 0;
 }
 body{
-    background-color: rgb(149, 84, 157);
+    background-color: rgba(255, 255, 255, 0.877);
 }
 header {
     text-align: center;
@@ -77,7 +77,8 @@ header h1{
 }
 
 section{
-    background-color: rgba(232, 206, 206, 0.4);
+    box-shadow: 5px 5px 5px 10px rgba(47, 46, 46, 0.2);
+    background-color: rgb(210, 210, 210);
     color: #221b1b;
 }
 section h2{
@@ -118,7 +119,9 @@ tr button{
     background-color: rgb(186, 143, 225);
 }
 
-
+#showAllC{
+    justify-content: center;
+}
 #showAll{
     display:flex;
     flex-wrap: wrap;
@@ -155,7 +158,7 @@ tr button{
     font-size: large;
     /* background-color:rgb(255, 255, 255); */
     border-radius: 5px;
-    margin-top: 380px;
+    margin-top: 250px;
     color: rgb(149, 84, 157);
 }
 .cButton{
@@ -187,7 +190,9 @@ tr button{
     transform: scale(1.5);
     filter: brightness(130%);
 }
-
+#showAllC{
+    display: block;
+}
 
 #section-container div h4{
     display: block;
@@ -217,6 +222,7 @@ tr button{
     border-radius: 4%;
     background-color: rgba(162, 109, 198, 0.4);
 }
+
 #section-container .addCart-button:hover{
     background-color: rgb(93, 26, 106);
     color: white;
@@ -232,10 +238,13 @@ tr button{
     font-size: x-large;
     display:flex;
     padding:20px;
-    border-style: dotted;
-    border-radius:10px;
+    border-radius:30px;
     margin:auto;
     cursor:pointer;
+}
+.see-cart:hover{
+    background-color: rgb(142, 3, 128);
+    color:black;
 }
 
 footer{
@@ -277,6 +286,7 @@ footer .ficon{
     background-color:rgb(225, 192, 232);
     border:1px solid rgb(0, 0, 0);
     min-height:50vh;
+    display: block;
 }
 #cart h2{
     margin:20px 0px;
@@ -300,17 +310,20 @@ footer .ficon{
 }
 
 .cart-items{
-    height: 450%;
+    height: 800px;
     border-style: ridge;
-    padding: 10px;
-    top:0;
-    position: relative;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 40px;
+    margin:10px;
+    /* top:0; */
+    /* position: relative; */
     background-color: black;
-    justify-content: end;
+    /* justify-content: end; */
     color: white;
-    width: max-content;
-    margin-top:5%;
-    width: 45%;
+    /* width: max-content; */
+    /* margin-top:5%; */
+    /* width: 25%; */
 }
 .cart-img{
     width:100px;
@@ -438,4 +451,17 @@ footer .ficon{
     /* width:1000px; */
     /* margin-right: 50px; */
     border-style: ridge;
+}
+#cartPages{
+    display: flex;
+}
+#remove{
+    background-color: rgb(121, 97, 129);
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+}
+#remove:hover{
+    background-color: red;
+    color: black;
 }

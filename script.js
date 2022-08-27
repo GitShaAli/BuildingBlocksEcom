@@ -27,6 +27,7 @@ parentContainer.addEventListener('click',(e)=>{
 
     // ---
     if (e.target.className=='btnPurchase'){
+        
         const productId = Number(e.target.parentNode.parentNode.id.split('-')[1]);
         console.log(productId)
         axios.post('http://localhost:3000/checkOut')
@@ -39,29 +40,12 @@ parentContainer.addEventListener('click',(e)=>{
         .catch(err => {
            notification(err, true);
         });
-
+        
+        cart.style = "display:none;"; 
     }
-    // btnPurchase
 
-    
-    if(e.target.className=='see-cart' || e.target.className=='navCart'){
-        const pageNumber = 1;
-            axios.get(`http://localhost:3000/cart/?page=1`).then(products => {
-                console.log(products.data)
-                for(let i=0;i<products.data.length;i++){
-                    
-                    const id = products.data[i].id;
-                    const name=products.data[i].title;
-                    const imageUrl=products.data[i].imageUrl;
-                    const price=products.data[i].price;
-                    const quantity=products.data[i].cartItem.quantity
-                    showCart(id,name,imageUrl,price,quantity);
-                    
 
-                }
-            })
-            cart.style = "display:block;";    
-    }
+
 
 
     if(e.target.className=='see-cart' || e.target.className=='navCart'){
@@ -72,17 +56,27 @@ parentContainer.addEventListener('click',(e)=>{
                 const cart_body = document.getElementById('cart-body');
                 console.log(res)
                 showCart(res.data.products);
-
-                const lastPageC=res.data.lastPC;
-                console.log('lastpage : '+lastPageC)
-                let pageParentCart = document.getElementById('Cpagination');
-                for(let i=2;i<=lastPageC;i++){
-                const pages = document.createElement("button");
-                pages.classList.add('cButton');
-                pages.innerText = i;
-                pageParentCart.appendChild(pages);
-            }
-            })
+                const cartButton = document.getElementsByClassName('cButton');
+                const cPagesList = document.getElementById('cartPages');
+                if(!cPagesList){
+                    const lastPageC=res.data.lastPC;
+                    console.log('lastpage : '+lastPageC)
+                    let pageParentCart = document.getElementById('Cpagination');
+                    let secondParent = document.createElement("div");
+                    secondParent.setAttribute("id", "cartPages");
+                    pageParentCart.appendChild(secondParent);
+                    
+                        for(let i=1;i<=lastPageC;i++){
+                        const pages = document.createElement("button");
+                        pages.classList.add('cButton');
+                        pages.innerText = i;
+                        secondParent.appendChild(pages);
+                        }
+                    
+                }
+                })
+            
+            
             
             cart.style = "display:block;";    
     }
@@ -96,7 +90,9 @@ parentContainer.addEventListener('click',(e)=>{
             });
             const pageNumber = e.target.innerHTML;
             const remElementForCart = document.getElementById('showAllC');
+            if(remElementForCart){
             remElementForCart.remove();     
+            }
             axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(res => {
 
                 const cart_body = document.getElementById('cart-body');
@@ -109,27 +105,15 @@ parentContainer.addEventListener('click',(e)=>{
     }
 
     if(e.target.className=='hide'){
+
         cart.style = "display:none;";
-    }
-    if (e.target.innerText=='Remove'){
-        let cartPrice = document.querySelector('#total').innerText;
-        cartPrice = parseFloat(cartPrice).toFixed(2) - parseFloat(document.querySelector(`#${e.target.parentNode.parentNode.id} .cart-price`).innerText).toFixed(2) ;
-        document.querySelector('.count').innerText = parseInt(document.querySelector('.count').innerText)-1
-        document.querySelector('#total').innerText = `${cartPrice.toFixed(2)}`
-        e.target.parentNode.parentNode.remove()
+
     }
 
-    // if(e.target.className=='pastOrders'){
-    //     axios.get(`http://localhost:3000/orders`).then(res => {
 
-    //             const cart_body = document.getElementById('cart-body');
-    //             console.log(res)
-    //             console.log(res.data[0].id)
-    //             console.log(res.data[0].products)
-    //                 // showCart(res.data.products);
 
-    //     })
-    // }
+
+
 
     if(e.target.className=='pButton'){
         const elements = Array.from(document.getElementsByClassName('active'));
@@ -149,6 +133,40 @@ parentContainer.addEventListener('click',(e)=>{
         e.target.classList.add('active');
         
     }
+
+
+
+    const rem = document.getElementById('remove');
+    
+    if(rem){
+ 
+        
+        if (e.target.className=='remove'){
+            const cPage = document.getElementById('cartPages');
+        
+        cPage.remove();
+        e.target.parentNode.parentNode.remove();
+            const productId = Number(e.target.parentNode.id.split('-')[1]);
+            console.log(productId)
+            axios.post('http://localhost:3000/cart-delete-item', { productId: productId})
+            .then(response => {
+                if(response.status==200){
+                    notification(response.data.message);
+                    cart.style = "display:none;";
+                    if(document.querySelector('.count').innerText>0){
+                        document.querySelector('.count').innerText-=1;
+                    }
+                    
+                }
+            })
+            .catch(err => {
+               notification(err, true);
+            });
+    
+        }
+
+    }
+    
 
 })
 }
@@ -172,11 +190,6 @@ window.addEventListener('DOMContentLoaded',()=>{
             }
     })
     axios.get(`http://localhost:3000/cart/?page=${pageNumber}`).then(res => {
-        // let totalPrice = 0;
-        // for(let i=0;i<res.data.products.length;i++){
-        //     totalPrice+=res.data.products[i].price;
-        // }
-        // document.querySelector('.dummyBtn').firstElementChild.innerText=totalPrice;
         let cartCount = res.data.totCartItems;
         document.querySelector('.count').innerText=cartCount;
     })
@@ -218,22 +231,24 @@ function showProducts(products){
 
 function showCart(products){
     const parentNode = document.getElementById('cart-body');
+    const block = document.getElementById('showAllC');
+    if(!block){
 
             let remElementC = document.createElement("div");
             remElementC.setAttribute("id", "showAllC");
             parentNode.appendChild(remElementC)
     for(let i=0;i<products.length;i++){
-            add_item = `<span class='cart-items'>
+            add_item = `<span class='cart-items' id="cart-${products[i].id}">
                                         
             <img class='cart-img' src="${products[i].imageUrl}" alt="images">
-            <span style="color:red;">${products[i].title}</span>
-            Quantity: <span class='cart-q'>${products[i].cartItem.quantity}</span>                
-            Price: <span class='cart-price'>${products[i].price}</span>
-            <button>Remove</button>
+            <span style="color:rgb(225, 192, 232);font-size:50px;"> ${products[i].title}</span>
+            Quantity : <span class='cart-q' style="background-color:white;color:black;padding:5px;border-radius:10px;">${products[i].cartItem.quantity}</span>               
+            Price : <span class='cart-price' style="background-color:white;color:black;padding:5px;border-radius:10px;">${products[i].price}</span>
+            <button id="remove" class="remove">X</button>
             </span>`
             remElementC.innerHTML+=add_item;
-    }
-        
+        }
+    }     
 
 
 }
